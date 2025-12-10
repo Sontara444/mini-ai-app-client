@@ -1,23 +1,23 @@
 # Little Portrait AI - Client
 
-A Next.js frontend for generating AI-powered portrait illustrations.
+Next.js frontend for AI-powered portrait generation.
 
 ## Tech Stack
 
 - **Next.js 16** with App Router
 - **TypeScript**
 - **Tailwind CSS**
-- **Framer Motion** for animations
+- **Framer Motion** - Animations
 
-## Getting Started
+## Setup
 
 1. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Create `.env.local` and add:
-   ```
+2. Create `.env.local`:
+   ```env
    NEXT_PUBLIC_API_URL=http://localhost:5000
    ```
 
@@ -30,7 +30,15 @@ A Next.js frontend for generating AI-powered portrait illustrations.
 
 ## Features
 
-- Drag & drop image upload
-- AI portrait generation
-- Download generated artwork
-- Responsive design with glassmorphism UI
+- ✨ Drag & drop image upload
+- 🎨 Custom style prompts (optional)
+- 🤖 AI portrait generation
+- 📥 Download generated artwork
+- 💫 Smooth animations & glassmorphism UI
+
+## Usage
+
+1. Upload a photo (drag & drop or click to browse)
+2. Optionally enter a custom style prompt
+3. Click "Generate Artwork"
+4. Download your AI-generated portrait
