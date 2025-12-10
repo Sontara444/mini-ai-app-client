@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, Sparkles, Image as ImageIcon, AlertCircle, Download, X, Zap } from 'lucide-react';
@@ -18,16 +18,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ title: string; message: string } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-
-  // Aurora Background Effect
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -77,13 +67,6 @@ export default function Home() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        if (response.status === 402) {
-          throw new Error('PAYMENT_REQUIRED');
-        }
-        throw new Error(data.error || 'Failed to generate portrait');
-      }
-
       if (data.result && Array.isArray(data.result) && data.result.length > 0) {
         setResultUrl(data.result[0]);
       } else if (data.result && typeof data.result === 'string') {
@@ -113,7 +96,6 @@ export default function Home() {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden text-zinc-100 selection:bg-purple-500/30">
 
-      {/* Dynamic Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div
           className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-600/20 blur-[120px] animate-float"
@@ -129,7 +111,6 @@ export default function Home() {
 
       <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center gap-12">
 
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -148,17 +129,14 @@ export default function Home() {
           </p>
         </motion.div>
 
-        {/* Main Content Area */}
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
-          {/* Left: Input Section */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col gap-6"
           >
-            {/* Upload Card */}
             <div
               className={cn(
                 "glass-card rounded-3xl p-8 transition-all duration-300 border-dashed border-2",
@@ -213,7 +191,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Error Message */}
             <AnimatePresence>
               {error && (
                 <motion.div
@@ -231,7 +208,6 @@ export default function Home() {
               )}
             </AnimatePresence>
 
-            {/* Generate Button */}
             <button
               onClick={handleGenerate}
               disabled={!selectedFile || loading}
@@ -259,7 +235,6 @@ export default function Home() {
             </button>
           </motion.div>
 
-          {/* Right: Result Section */}
           <div className="relative min-h-[400px] flex items-center justify-center">
             <AnimatePresence mode="wait">
               {resultUrl ? (
@@ -280,7 +255,6 @@ export default function Home() {
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
 
-                      {/* Overlay Actions */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                         <div className="flex gap-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                           <a
