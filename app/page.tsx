@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, Sparkles, Image as ImageIcon, AlertCircle, Download, X, Zap } from 'lucide-react';
+import { Upload, Sparkles, Image as ImageIcon, AlertCircle, Download, X, Zap, Wand2 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -18,6 +18,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ title: string; message: string } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [customPrompt, setCustomPrompt] = useState('');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -58,6 +59,9 @@ export default function Home() {
 
     const formData = new FormData();
     formData.append('image', selectedFile);
+    if (customPrompt.trim()) {
+      formData.append('prompt', customPrompt.trim());
+    }
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/personalize`, {
@@ -189,6 +193,20 @@ export default function Home() {
                   </>
                 )}
               </div>
+            </div>
+
+            <div className="glass-card rounded-2xl p-4 border border-white/10">
+              <div className="flex items-center gap-2 mb-3">
+                <Wand2 className="w-4 h-4 text-purple-400" />
+                <label className="text-sm font-medium text-zinc-300">Custom Style (Optional)</label>
+              </div>
+              <textarea
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                placeholder="Leave empty for default 3D animated style, or describe your own style..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 resize-none transition-all"
+                rows={3}
+              />
             </div>
 
             <AnimatePresence>
